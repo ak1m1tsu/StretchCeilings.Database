@@ -1,4 +1,4 @@
-SELECT Orders.id, Orders.total FROM Orders
-WHERE Orders.date_canceled IS NULL
-ORDER BY total DESC
-LIMIT 10
+SELECT Services.id, Services.name, Count(OrderServices.order_id) Count FROM Services
+INNER JOIN OrderServices ON Services.id = OrderServices.service_id
+WHERE Services.date_deleted IS NULL
+GROUP BY Services.id, Services.name

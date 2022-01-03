@@ -12,6 +12,7 @@
 * Файл схемы базы данных [тут](database/db_scheme.pdd)
 
 Схема базы данных создана при помощи программы **[Microolap Batabase Designer for Postgre SQL](https://www.microolap.com/products/database/postgresql-designer/download/)**
+
 Сама база данных создана при помощи **[SQLiteStudio](https://sqlitestudio.pl/)**
 
 <hr>
@@ -54,12 +55,13 @@ LIMIT 1
 
 <br>
 
-### 3. Топ 10 самых дорогих заказов.
+### 3. Кол-во услуг за все время.
 ```sql
-SELECT Orders.id, Orders.total FROM Orders
-WHERE Orders.date_canceled IS NULL
-ORDER BY total DESC
-LIMIT 10
+SELECT Services.id, Services.name, Count(OrderServices.order_id) Count FROM Services
+INNER JOIN OrderServices ON Services.id = OrderServices.service_id
+WHERE Services.date_deleted IS NULL
+GROUP BY Services.id, Services.name
+
 ```
 
 <br>
