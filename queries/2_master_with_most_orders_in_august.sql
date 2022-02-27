@@ -1,9 +1,11 @@
-SELECT Employees.id, Employees.full_name, Count(OrderEmployees.order_id) Count FROM Employees
-INNER JOIN OrderEmployees ON Employees.id = OrderEmployees.employee_id
-WHERE Employees.date_deleted IS NULL AND  OrderEmployees.order_id IN (
-    SELECT Orders.id FROM Orders
-    WHERE Orders.date_canceled IS NULL AND Orders.date_placed BETWEEN "2020-08-01" AND "2020-09-01"
-)
-GROUP BY Employees.id, Employees.full_name
-ORDER BY Count DESC
-LIMIT 1
+SELECT Employees.*, MAX(O.Count) Count
+FROM Employees
+INNER JOIN (
+	SELECT OrderEmployees.EmployeeId, COUNT(OrderEmployees.OrderId) Count
+	FROM OrderEmployees
+	INNER JOIN Employees ON Employees.Id = OrderEmployees.EmployeeId
+	INNER JOIN Orders ON Orders.Id = OrderEmployees.OrderId
+	WHERE Employees.RoleId == 3 AND Orders.DatePlaced BETWEEN "2022-08-01 00:00:00" AND "2022-09-01 00:00:00" 
+		AND Orders.DeletedDate IS NULL AND Employees.DeletedDate IS NULL
+	GROUP BY OrderEmployees.EmployeeId
+) O ON O.EmployeeId = Employees.Id
