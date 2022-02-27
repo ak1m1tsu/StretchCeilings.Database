@@ -1,8 +1,7 @@
 SELECT Orders.* FROM Orders
-INNER JOIN OrderEmployees ON OrderEmployees.order_id = Orders.id
-WHERE Orders.date_canceled IS NULL AND OrderEmployees.order_id NOT IN (
-    SELECT OrderEmployees.order_id FROM OrderEmployees
-    INNER JOIN Orders ON Orders.id = OrderEmployees.order_id
-    WHERE employee_id = @id AND employee_id IS NOT NULL
+WHERE Orders.Id NOT IN (
+	SELECT Orders.Id FROM Orders
+	INNER JOIN OrderEmployees ON OrderEmployees.OrderId = Orders.Id
+	WHERE OrderEmployees.EmployeeId = @id
 )
-GROUP BY Orders.id
+GROUP BY Orders.Id
